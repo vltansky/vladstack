@@ -3,17 +3,17 @@
 ## The Pipeline
 
 ```
-/brainstorm ──→ /octocode-research ──→ /rfc-research ──→ /grill-me ──→ built-in plan mode ──→ /autopilot ──→ /ship-it ──→ /fix-pr
-      │                 │                    │               │              │               │              │              │
-  explore idea     deep-dive            research +       challenge     refine into      build it      create PR     address
-  & design it      code search          write plan       the idea      impl plan      autonomously                  feedback
+/vs-brainstorm ──→ /vs-octocode-research ──→ /vs-rfc-research ──→ /vs-grill-me ──→ built-in plan mode ──→ /vs-autopilot ──→ /vs-ship-it ──→ /vs-fix-pr
+      │                    │                       │                   │                  │                  │                 │                │
+  explore idea        deep-dive               research +           challenge          refine into        build it          create PR       address
+  & design it         code search             write plan           the idea           impl plan        autonomously                        feedback
 ```
 
 Each skill's handoff suggests the next step. The chain is natural.
 
 ## Full Flow
 
-### 0. /brainstorm — Explore and design
+### 0. /vs-brainstorm — Explore and design
 
 **Input:** A rough idea or feature request
 **Output:** Validated design spec
@@ -22,9 +22,9 @@ Collaborative design session: explores project context, asks clarifying question
 one at a time, researches prior art, proposes approaches with trade-offs, then
 writes a design for approval.
 
-**Handoff:** `/grill-me` (stress-test the design) | `/octocode-research` (dig deeper)
+**Handoff:** `/vs-grill-me` (stress-test the design) | `/vs-octocode-research` (dig deeper)
 
-### 1. /octocode-research — Explore code
+### 1. /vs-octocode-research — Explore code
 
 **Input:** A question about code ("how does X work", "where is Y defined")
 **Output:** Data-driven findings with exact file references
@@ -32,9 +32,9 @@ writes a design for approval.
 Deep code exploration using octocode MCP — local codebase analysis with LSP
 and external GitHub/npm research.
 
-**Handoff:** `/rfc-research` (formalize findings) | `/grill-me` (stress-test a design) | `/autopilot` (implement)
+**Handoff:** `/vs-rfc-research` (formalize findings) | `/vs-grill-me` (stress-test a design) | `/vs-autopilot` (implement)
 
-### 2. /rfc-research — Write the plan
+### 2. /vs-rfc-research — Write the plan
 
 **Input:** Topic or problem statement
 **Output:** Evidence-backed RFC document
@@ -42,9 +42,9 @@ and external GitHub/npm research.
 Researches the topic using octocode MCP, produces an RFC with prior art
 analysis, alternatives, and risks.
 
-**Handoff:** `/grill-me` (stress-test the RFC) | `/autopilot` (implement the approved RFC)
+**Handoff:** `/vs-grill-me` (stress-test the RFC) | `/vs-autopilot` (implement the approved RFC)
 
-### 3. /grill-me — Challenge the idea
+### 3. /vs-grill-me — Challenge the idea
 
 **Input:** A plan, idea, or proposal
 **Output:** Stress-test report with score and verdict
@@ -52,46 +52,46 @@ analysis, alternatives, and risks.
 Adversarial review across 7 dimensions (premise, assumptions, feasibility,
 edge cases, security, maintainability, scope). Scores readiness 0-100.
 
-Uses octocode-research for pre-scan: searches GitHub for existing solutions,
+Uses vs-octocode-research for pre-scan: searches GitHub for existing solutions,
 patterns that contradict the plan, and simpler alternatives.
 
-**Handoff:** `/autopilot` (execute the grilled plan) | fix the plan and `/grill-me` again
+**Handoff:** `/vs-autopilot` (execute the grilled plan) | fix the plan and `/vs-grill-me` again
 
-### 4. /autopilot — Build it
+### 4. /vs-autopilot — Build it
 
 **Input:** A reviewed plan
 **Output:** A shippable branch with commits, tests, and passing guardrails
 
 See [Autopilot Flow](#autopilot-flow) below.
 
-**Handoff:** All green → `/ship-it`. Failures → fix first.
+**Handoff:** All green → `/vs-ship-it`. Failures → fix first.
 
-### 5. /ship-it — Create PR
+### 5. /vs-ship-it — Create PR
 
 **Input:** A branch with commits
 **Output:** GitHub PR with conventional format + AI session context
 
-Runs `/roast-my-code` first if it hasn't been run in the session.
+Runs `/vs-roast-my-code` first if it hasn't been run in the session.
 
-**Handoff:** When reviewers comment → `/fix-pr`.
+**Handoff:** When reviewers comment → `/vs-fix-pr`.
 
-### 6. /fix — Fix a bug autonomously
+### 6. /vs-fix — Fix a bug autonomously
 
 **Input:** Bug description, GitHub issue, error/stack trace, or failing test
 **Output:** Clean branch with fix, regression test, and passing guardrails
 
-Autonomous bug fix pipeline. Loads debug-mode, tdd, qa, octocode-research,
-and roast-my-code on demand. Four circuit breakers halt the run when the
+Autonomous bug fix pipeline. Loads vs-debug-mode, vs-tdd, vs-qa, vs-octocode-research,
+and vs-roast-my-code on demand. Four circuit breakers halt the run when the
 fix can't proceed safely.
 
-**Handoff:** `/ship-it` (create PR) | `/roast-my-code` (manual review)
+**Handoff:** `/vs-ship-it` (create PR) | `/vs-roast-my-code` (manual review)
 
-### 7. /fix-pr — Address feedback
+### 7. /vs-fix-pr — Address feedback
 
 **Input:** PR with review comments
 **Output:** Fixes applied, replies posted, threads resolved
 
-**Handoff:** `/ship-it` (re-push) | `/roast-my-code` (self-review before re-push) | done
+**Handoff:** `/vs-ship-it` (re-push) | `/vs-roast-my-code` (self-review before re-push) | done
 
 ---
 
@@ -108,8 +108,8 @@ Phase 0: Setup
   ├── Create feature branch
   └── Extract plan steps + dependency graph
 
-Phase 1: Roast (loads /grill-me as worker)
-  ├── Load grill-me SKILL.md from disk
+Phase 1: Roast (loads /vs-grill-me as worker)
+  ├── Load vs-grill-me SKILL.md from disk
   ├── Follow full methodology — auto-decide all questions
   ├── Decision principles handle every interactive point
   └── Circuit breaker: NOT_READY (score < 60) → stop, ask user
@@ -133,7 +133,7 @@ Phase 3: Execute (SDD — subagent workers)
   │     └── Pipeline: review worker on completed layer (background)
   └── Final validation (full suite + build)
 
-Phase 4: Review (loads /roast-my-code as worker)
+Phase 4: Review (loads /vs-roast-my-code as worker)
   ├── Pass 1 (Simplify): 3 parallel agents — auto-fix
   │     ├── Code reuse
   │     ├── Code quality
@@ -145,7 +145,7 @@ Phase 4: Review (loads /roast-my-code as worker)
   ├── Apply fixes, re-run guardrails
   └── Revert any fix that breaks execution code
 
-Phase 5: QA (loads /qa as worker, web apps only)
+Phase 5: QA (loads /vs-qa as worker, web apps only)
   ├── Detect web app
   ├── Diff-aware mode (only pages affected by branch)
   ├── Debug logs provide runtime evidence
@@ -161,7 +161,7 @@ Phase 7: Handoff
   ├── Decision log (every auto-resolved decision)
   ├── Guardrail results
   ├── Flagged items for human review
-  └── Suggest: /ship-it
+  └── Suggest: /vs-ship-it
 ```
 
 ### Worker Status Protocol
@@ -192,12 +192,12 @@ One stop point: NOT_READY (score < 60) with unresolved high-severity issues.
 
 | Skill | Used by | Standalone use |
 |-------|---------|----------------|
-| /fix | standalone | Autonomous end-to-end bug fix pipeline |
-| /tdd | autopilot workers, /fix | Bug fixes, test-first features |
-| /debug-mode | autopilot (guardrail failures + instrumentation), /fix | Any root-cause investigation + frontend log server |
-| /roast-my-code | autopilot (review phase), ship-it (gate) | Two-pass code review with cross-model Codex review |
-| /qa | autopilot (QA phase) | Test any running web app |
-| /octocode-research | grill-me, rfc-research | Deep GitHub code research |
+| /vs-fix | standalone | Autonomous end-to-end bug fix pipeline |
+| /vs-tdd | vs-autopilot workers, /vs-fix | Bug fixes, test-first features |
+| /vs-debug-mode | vs-autopilot (guardrail failures + instrumentation), /vs-fix | Any root-cause investigation + frontend log server |
+| /vs-roast-my-code | vs-autopilot (review phase), vs-ship-it (gate) | Two-pass code review with cross-model Codex review |
+| /vs-qa | vs-autopilot (QA phase) | Test any running web app |
+| /vs-octocode-research | vs-grill-me, vs-rfc-research | Deep GitHub code research |
 
 ## Skill Composition
 
@@ -206,10 +206,10 @@ with graceful fallback:
 
 | Missing | Fallback |
 |---------|----------|
-| grill-me | Built-in lightweight review |
-| tdd | Tests after implementation |
-| debug-mode | Basic debugging |
-| roast-my-code | Lightweight self-review |
-| qa | Skipped |
+| vs-grill-me | Built-in lightweight review |
+| vs-tdd | Tests after implementation |
+| vs-debug-mode | Basic debugging |
+| vs-roast-my-code | Lightweight self-review |
+| vs-qa | Skipped |
 | octocode | Web search |
 | codex | Roast-only review (no cross-model) |

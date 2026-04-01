@@ -22,7 +22,7 @@ interface EvalJudgeResult {
   reasoning: string;
 }
 
-const evalsPath = path.resolve(__dirname, '../../plugins/vladstack/skills/grill-me/evals/evals.json');
+const evalsPath = path.resolve(__dirname, '../../skills/vs-grill-me/evals/evals.json');
 const evals: EvalCase[] = JSON.parse(fs.readFileSync(evalsPath, 'utf-8')).evals;
 
 const collector = new EvalCollector('e2e');

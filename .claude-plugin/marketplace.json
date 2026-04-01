@@ -15,7 +15,7 @@
       "author": {
         "name": "Vlad Tansky"
       },
-      "source": "./plugins/vladstack"
+      "source": "."
     }
   ]
 }

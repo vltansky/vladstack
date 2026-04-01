@@ -54,13 +54,13 @@ interface EvalJudgeResult {
 
 const evalsPath = path.resolve(
   __dirname,
-  '../../plugins/vladstack/skills/autopilot/evals/evals.json',
+  '../../skills/vs-autopilot/evals/evals.json',
 );
 const evals: EvalCase[] = JSON.parse(fs.readFileSync(evalsPath, 'utf-8')).evals;
 
 const skillPath = path.resolve(
   __dirname,
-  '../../plugins/vladstack/skills/autopilot/SKILL.md',
+  '../../skills/vs-autopilot/SKILL.md',
 );
 const skillContent = fs.readFileSync(skillPath, 'utf-8');
 
@@ -192,17 +192,35 @@ describe.skipIf(!EVALS_ENABLED)('autopilot', () => {
         scaffold(workDir);
 
         const isCircuitBreaker = evalCase.name.includes('circuit-breaker');
+        const isNoPlan = evalCase.name.includes('no-plan');
 
-        const prompt = [
+        const promptParts = [
           'You are an autonomous coding agent. Follow the skill instructions below exactly.',
           '',
           '<skill>',
           skillContent,
           '</skill>',
           '',
-          `<plan>`,
-          evalCase.prompt,
-          `</plan>`,
+        ];
+
+        if (isNoPlan) {
+          promptParts.push(
+            '<user-request>',
+            evalCase.prompt,
+            '</user-request>',
+            '',
+            'IMPORTANT: No implementation plan is provided — just a feature request.',
+            'Follow Phase 0 Step 1a to auto-generate a plan before proceeding.',
+          );
+        } else {
+          promptParts.push(
+            '<plan>',
+            evalCase.prompt,
+            '</plan>',
+          );
+        }
+
+        promptParts.push(
           '',
           'IMPORTANT: This is a non-interactive eval run.',
           'Do NOT ask questions or wait for user input at any point.',
@@ -212,7 +230,9 @@ describe.skipIf(!EVALS_ENABLED)('autopilot', () => {
             ? 'If the plan is NOT_READY, output the roast findings and stop. Do NOT proceed to execution.'
             : 'Run all phases to completion and produce the full handoff summary.',
           'Do not start a dev server.',
-        ].join('\n');
+        );
+
+        const prompt = promptParts.join('\n');
 
         const result: SkillTestResult = await runSkillTest({
           prompt,
@@ -295,10 +315,11 @@ function buildJudgePrompt(
   const diffStat = gitDiff.stdout?.toString().trim() || '';
 
   const isCircuitBreaker = evalCase.name.includes('circuit-breaker');
+  const isNoPlan = evalCase.name.includes('no-plan');
 
   return `You are evaluating whether an AI agent's autopilot skill correctly executed a plan.
 
-PLAN given to autopilot:
+${isNoPlan ? 'FEATURE REQUEST (no plan provided)' : 'PLAN given to autopilot'}:
 ${evalCase.prompt}
 
 EXPECTED BEHAVIOR:
@@ -321,7 +342,17 @@ ${isCircuitBreaker ? `This is a CIRCUIT BREAKER test. The plan is deliberately t
 
 Score 5 if: autopilot stopped early, identified the plan as not ready, and did not create implementation code.
 Score 3 if: autopilot showed concerns but still tried to implement.
-Score 1 if: autopilot proceeded with implementation as if the plan were reasonable.` : `This is a HAPPY PATH test. Evaluate:
+Score 1 if: autopilot proceeded with implementation as if the plan were reasonable.` : isNoPlan ? `This is a NO-PLAN AUTO-GENERATE test. The user provided only a feature request, not a structured plan. Evaluate:
+1. Did autopilot detect the missing plan and auto-generate one? (Check decision log or output for mention of auto-generating/creating a plan)
+2. Did it then proceed through normal phases (roast, execute, review, handoff)?
+3. Was the feature actually implemented with tests?
+4. Does the handoff summary exist with pipeline table, decision log, and guardrail results?
+
+Score 5 = detected missing plan, auto-generated it, full pipeline execution with proper handoff.
+Score 4 = auto-generated plan and implemented, minor handoff gaps.
+Score 3 = implemented the feature but didn't clearly auto-generate a plan or handoff is incomplete.
+Score 2 = some work done but major gaps in plan generation or execution.
+Score 1 = did not detect missing plan or failed to implement.` : `This is a HAPPY PATH test. Evaluate:
 1. Did autopilot produce a handoff summary with pipeline table, decision log, and guardrail results?
 2. Were commits made (not just one giant commit)?
 3. Were tests written?

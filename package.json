@@ -8,7 +8,8 @@
   "scripts": {
     "test": "bun test",
     "test:evals": "EVALS=1 bun test",
-    "install:global": "npx -y skills add ./skills --all -g"
+    "install:global": "npx -y skills add . --all -g",
+    "install:local": "npx -y skills add . --all"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.81.0"

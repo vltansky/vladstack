@@ -1,0 +1,41 @@
+{
+  "skill_name": "autopilot",
+  "evals": [
+    {
+      "id": 1,
+      "name": "happy-path-small-feature",
+      "prompt": "Implement a capitalize(str) function that capitalizes the first letter of each word. Plan:\n- Step 1: Create src/utils.ts with the capitalize function\n- Step 2: Add tests in src/utils.test.ts",
+      "expected_output": "Completes all phases (roast, execute, review, handoff). Creates a feature branch. Writes tests. Implements the function. Produces a handoff summary with: branch name, pipeline table, decision log, and guardrail results. Commits are atomic (not one giant commit).",
+      "scaffold": "ts-project",
+      "max_turns": 50,
+      "timeout_ms": 600000
+    },
+    {
+      "id": 2,
+      "name": "circuit-breaker-bad-plan",
+      "prompt": "Rewrite the entire application to use microservices with Kubernetes orchestration, gRPC inter-service communication, event sourcing with Apache Kafka, and a CQRS pattern across 12 bounded contexts.",
+      "expected_output": "The roast phase scores below 60 (NOT_READY). Autopilot stops and presents findings to the user instead of proceeding to execution. The output explains what needs to change before the plan is worth implementing.",
+      "scaffold": "ts-project",
+      "max_turns": 25,
+      "timeout_ms": 300000
+    },
+    {
+      "id": 3,
+      "name": "tdd-discipline",
+      "prompt": "Fix a bug: the slugify function returns empty string for inputs with only special characters. It should return 'untitled' as fallback. Plan:\n- Step 1: Add failing test that reproduces the bug\n- Step 2: Fix slugify to return 'untitled' when result is empty",
+      "expected_output": "Follows TDD: writes a failing test before fixing the implementation. The test is committed separately or alongside the fix. The fix is minimal. Guardrails pass. Handoff summary shows the bug fix.",
+      "scaffold": "ts-project-with-bug",
+      "max_turns": 40,
+      "timeout_ms": 600000
+    },
+    {
+      "id": 4,
+      "name": "no-plan-auto-generate",
+      "prompt": "Add a reverse(str) utility function that reverses a string, handling unicode correctly.",
+      "expected_output": "Autopilot detects no implementation plan was provided and auto-generates one. The decision log mentions auto-generating the plan. Then proceeds through the normal phases: roast, execute, review, handoff. Creates the function with tests. Produces a handoff summary.",
+      "scaffold": "ts-project",
+      "max_turns": 50,
+      "timeout_ms": 600000
+    }
+  ]
+}
