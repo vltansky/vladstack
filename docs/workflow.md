@@ -3,28 +3,48 @@
 ## The Pipeline
 
 ```
-/brainstorm ──→ /grill-me ──→ /rfc (or plan mode) ──→ /autopilot ──→ /ship-it ──→ /fix-pr
-      │              │               │                      │              │               │
-  explore idea    challenge       research +            build it        create PR      address
-  & design it     the idea        write plan          autonomously                    feedback
+/brainstorm ──→ /octocode-research ──→ /rfc-research ──→ /grill-me ──→ /autopilot ──→ /ship-it ──→ /fix-pr
+      │                 │                    │               │               │              │              │
+  explore idea     deep-dive            research +       challenge        build it      create PR     address
+  & design it      code search          write plan       the idea       autonomously                  feedback
 ```
 
 Each skill's handoff suggests the next step. The chain is natural.
 
 ## Full Flow
 
-### 1. /brainstorm — Explore and design
+### 0. /brainstorm — Explore and design
 
 **Input:** A rough idea or feature request
-**Output:** Validated design spec committed to `docs/specs/`
+**Output:** Validated design spec
 
 Collaborative design session: explores project context, asks clarifying questions
-one at a time, researches prior art (via octocode), proposes 2-3 approaches with
-trade-offs, then writes a design doc for approval.
+one at a time, researches prior art, proposes approaches with trade-offs, then
+writes a design for approval.
 
-**Handoff:** "Before we build — I recommend running `/grill-me` on this design."
+**Handoff:** `/grill-me` (stress-test the design) | `/octocode-research` (dig deeper)
 
-### 2. /grill-me — Challenge the idea
+### 1. /octocode-research — Explore code
+
+**Input:** A question about code ("how does X work", "where is Y defined")
+**Output:** Data-driven findings with exact file references
+
+Deep code exploration using octocode MCP — local codebase analysis with LSP
+and external GitHub/npm research.
+
+**Handoff:** `/rfc-research` (formalize findings) | `/grill-me` (stress-test a design) | `/autopilot` (implement)
+
+### 2. /rfc-research — Write the plan
+
+**Input:** Topic or problem statement
+**Output:** Evidence-backed RFC document
+
+Researches the topic using octocode MCP, produces an RFC with prior art
+analysis, alternatives, and risks.
+
+**Handoff:** `/grill-me` (stress-test the RFC) | `/autopilot` (implement the approved RFC)
+
+### 3. /grill-me — Challenge the idea
 
 **Input:** A plan, idea, or proposal
 **Output:** Stress-test report with score and verdict
@@ -35,19 +55,7 @@ edge cases, security, maintainability, scope). Scores readiness 0-100.
 Uses octocode-research for pre-scan: searches GitHub for existing solutions,
 patterns that contradict the plan, and simpler alternatives.
 
-**Handoff:** "Next: write an RFC with /rfc-research or refine the plan."
-
-### 3. /rfc-research — Write the plan
-
-**Input:** Topic or problem statement
-**Output:** Evidence-backed RFC document
-
-Researches the topic using octocode MCP, produces an RFC with prior art
-analysis, alternatives, and risks.
-
-Alternative: use Claude's native plan mode for simpler plans.
-
-**Handoff:** "Next: /autopilot to implement."
+**Handoff:** `/autopilot` (execute the grilled plan) | fix the plan and `/grill-me` again
 
 ### 4. /autopilot — Build it
 
@@ -56,21 +64,23 @@ Alternative: use Claude's native plan mode for simpler plans.
 
 See [Autopilot Flow](#autopilot-flow) below.
 
-**Handoff:** "All green → /ship-it. Failures → fix first."
+**Handoff:** All green → `/ship-it`. Failures → fix first.
 
 ### 5. /ship-it — Create PR
 
 **Input:** A branch with commits
 **Output:** GitHub PR with conventional format + AI session context
 
-**Handoff:** "When reviewers comment → /fix-pr."
+Runs `/roast-my-code` first if it hasn't been run in the session.
+
+**Handoff:** When reviewers comment → `/fix-pr`.
 
 ### 6. /fix-pr — Address feedback
 
 **Input:** PR with review comments
 **Output:** Fixes applied, replies posted, threads resolved
 
-**Handoff:** "All addressed. Push and wait for approval."
+**Handoff:** `/ship-it` (re-push) | `/roast-my-code` (self-review before re-push) | done
 
 ---
 
@@ -82,6 +92,7 @@ Zero human interaction except the circuit breaker.
 ```
 Phase 0: Setup
   ├── Read CLAUDE.md (test/build/lint commands)
+  ├── Validate guardrail commands work
   ├── Read plan file
   ├── Create feature branch
   └── Extract plan steps + dependency graph
@@ -98,7 +109,7 @@ Phase 2: Fix Plan
   └── Re-extract steps if plan structure changed
 
 Phase 3: Execute (SDD — subagent workers)
-  ├── Add debug instrumentation (#region autopilot-debug)
+  ├── Add debug instrumentation (existing code only, #region autopilot-debug)
   ├── Group steps into dependency layers
   ├── For each layer:
   │     ├── Dispatch parallel workers (one per independent step)
@@ -111,9 +122,15 @@ Phase 3: Execute (SDD — subagent workers)
   │     └── Pipeline: review worker on completed layer (background)
   └── Final validation (full suite + build)
 
-Phase 4: Review (loads /simplify as worker)
-  ├── Collect pipelined review findings
-  ├── 3 parallel review agents: reuse, quality, efficiency
+Phase 4: Review (loads /roast-my-code as worker)
+  ├── Pass 1 (Simplify): 3 parallel agents — auto-fix
+  │     ├── Code reuse
+  │     ├── Code quality
+  │     └── Efficiency
+  ├── Pass 2 (Roast + Codex): cross-model review
+  │     ├── Roast agent (correctness, security, architecture, error handling)
+  │     └── Codex review (second opinion from different LLM)
+  ├── Auto-select option b (critical + serious) — no user interaction
   ├── Apply fixes, re-run guardrails
   └── Revert any fix that breaks execution code
 
@@ -124,13 +141,13 @@ Phase 5: QA (loads /qa as worker, web apps only)
   └── Fix bugs atomically, revert on regression
 
 Phase 6: Cleanup
-  ├── Remove all #region autopilot-debug instrumentation
+  ├── Remove all #region autopilot-debug instrumentation (if added)
   ├── Run full guardrails
   └── Commit: "chore: remove autopilot debug instrumentation"
 
 Phase 7: Handoff
   ├── Pipeline summary table
-  ├── Decision log
+  ├── Decision log (every auto-resolved decision)
   ├── Guardrail results
   ├── Flagged items for human review
   └── Suggest: /ship-it
@@ -165,12 +182,10 @@ One stop point: NOT_READY (score < 60) with unresolved high-severity issues.
 | Skill | Used by | Standalone use |
 |-------|---------|----------------|
 | /tdd | autopilot workers | Bug fixes, test-first features |
-| /debug | autopilot (guardrail failures) | Any root-cause investigation |
-| /debug-mode | autopilot (instrumentation) | Frontend runtime debugging |
-| /simplify | autopilot (review phase) | Post-change quality sweep |
+| /debug-mode | autopilot (guardrail failures + instrumentation) | Any root-cause investigation + frontend log server |
+| /roast-my-code | autopilot (review phase), ship-it (gate) | Two-pass code review with cross-model Codex review |
 | /qa | autopilot (QA phase) | Test any running web app |
 | /octocode-research | grill-me, rfc-research | Deep GitHub code research |
-| /roast-my-code | standalone | Comedic code review |
 
 ## Skill Composition
 
@@ -181,7 +196,8 @@ with graceful fallback:
 |---------|----------|
 | grill-me | Built-in lightweight review |
 | tdd | Tests after implementation |
-| debug | Basic debugging |
-| simplify | Lightweight self-review |
+| debug-mode | Basic debugging |
+| roast-my-code | Lightweight self-review |
 | qa | Skipped |
 | octocode | Web search |
+| codex | Roast-only review (no cross-model) |

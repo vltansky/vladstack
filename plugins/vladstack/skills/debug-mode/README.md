@@ -1,11 +1,11 @@
-# debug
+# debug-mode
 
 Systematic root-cause debugging with optional runtime log server for frontend/UI bugs. Hypothesis-driven investigation with evidence collection.
 
 ## Install
 
 ```bash
-npx skills add vltansky/skills/skills/debug -g -y
+npx skills add vltansky/vladstack/skills/debug-mode -g -y
 ```
 
 ## Prerequisites
@@ -16,7 +16,7 @@ npx skills add vltansky/skills/skills/debug -g -y
 ## Usage
 
 Trigger phrases:
-- "debug", "debug this"
+- "debug", "debug this", "debug mode"
 - "investigate", "why is this broken"
 - "root cause", "trace this bug"
 - "figure out why", "this doesn't work"

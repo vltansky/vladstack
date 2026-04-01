@@ -3,7 +3,7 @@
 Plan-to-ship skill kit for AI coding agents. One pipeline, zero babysitting.
 
 ```
-/grill-me → /rfc → /autopilot → /ship-it → /fix-pr
+/brainstorm → /grill-me → /rfc-research → /autopilot → /ship-it → /fix-pr
 ```
 
 ## Why
@@ -15,7 +15,7 @@ The idea combines three influences:
 - **superpowers'** composable skills -- each skill is self-contained, discovers others by filesystem path, and degrades gracefully when a dependency is missing
 - **octocode MCP's** code forensics -- real GitHub evidence backing research and review instead of the agent guessing
 
-The result: skills that work standalone (`/tdd`, `/debug`, `/roast-my-code`) but also snap together into an autonomous pipeline (`/autopilot`) that dispatches parallel subagent workers, runs TDD, reviews its own output, and QA-tests the result before handing off.
+The result: skills that work standalone (`/tdd`, `/debug-mode`, `/roast-my-code`) but also snap together into an autonomous pipeline (`/autopilot`) that dispatches parallel subagent workers, runs TDD, reviews its own output, and QA-tests the result before handing off.
 
 ## Install
 
@@ -44,24 +44,43 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 
 | Command | What it does |
 |---------|-------------|
+| `/brainstorm` | Collaborative design session — explore intent, refine idea into spec |
 | `/grill-me` | Adversarial stress-test — challenges premises, scores readiness |
 | `/autopilot` | Autonomous build: roast → fix → TDD execute → review → QA → handoff |
-| `/ship-it` | Create PR with conventional format + AI session context |
+| `/ship-it` | Create PR (runs `/roast-my-code` first if not already run) |
 | `/fix-pr` | Address reviewer feedback — fix, reply, resolve threads |
+
+### Review
+
+| Command | What it does |
+|---------|-------------|
+| `/roast-my-code` | Two-pass review: simplify (auto-fix) → roast + Codex cross-model review |
 
 ### Standalone
 
 | Command | What it does |
 |---------|-------------|
 | `/tdd` | Red/green/refactor — write failing test first |
-| `/debug` | Hypothesis-driven root-cause investigation |
+| `/debug-mode` | Hypothesis-driven debugging + runtime log server for frontend |
 | `/qa` | Browser-based QA testing with atomic fix commits |
-| `/simplify` | 3 parallel review agents + auto-fix |
-| `/roast-my-code` | Brutally honest code review with comedic flair |
+| `/octocode-research` | Deep GitHub code search and exploration |
+| `/rfc-research` | Evidence-backed RFC / technical proposal |
 
-## How it works
+## Workflow
+
+```
+brainstorm → octocode-research → rfc-research → grill-me → autopilot → ship-it ⇄ fix-pr
+                                                    ↕
+                          debug-mode → tdd → roast-my-code → ship-it
+                                               ↑
+                                               qa
+```
+
+Every skill has a `## Workflow` section with **Prev/Next** links.
 
 See [docs/workflow.md](docs/workflow.md) for the full pipeline and autopilot internals.
+
+## How it works
 
 **Autopilot dispatches subagent workers via SDD:**
 - Each worker gets isolated context + specific task
@@ -69,12 +88,19 @@ See [docs/workflow.md](docs/workflow.md) for the full pipeline and autopilot int
 - Independent steps run in parallel (dependency layers)
 - Review runs in background while next layer executes
 
+**`/roast-my-code` is a two-pass review:**
+- Pass 1 (Simplify): 3 parallel agents (reuse, quality, efficiency) — auto-apply fixes
+- Pass 2 (Roast + Codex): cross-model review from a different LLM — present sins interactively
+
+**`/ship-it` gates on review:** if `/roast-my-code` hasn't run in the session, it runs automatically before creating the PR.
+
 **Skills compose by loading each other from disk.** Every dependency is optional.
 
 ## External dependencies
 
 - [dev-browser](https://github.com/anthropics/dev-browser) — headless browser (used by /qa)
 - [octocode MCP](https://github.com/bgauryy/octocode-mcp) — GitHub code search (used by /rfc-research, /grill-me)
+- [Codex CLI](https://github.com/openai/codex) — cross-model review (used by /roast-my-code)
 - `gh` CLI — GitHub operations (used by /ship-it, /fix-pr)
 
 ## Credits
