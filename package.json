@@ -1,0 +1,16 @@
+{
+  "name": "vladstack",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Plan-to-ship skill kit for AI coding agents",
+  "license": "MIT",
+  "scripts": {
+    "test": "bun test",
+    "test:evals": "EVALS=1 bun test",
+    "install:global": "npx -y skills add ./skills --all -g"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "^0.81.0"
+  }
+}

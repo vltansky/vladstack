@@ -1,0 +1,21 @@
+{
+  "name": "vladstack",
+  "owner": {
+    "name": "Vlad Tansky"
+  },
+  "metadata": {
+    "description": "Plan-to-ship skill kit — grill, plan, build, ship, iterate.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "vladstack",
+      "description": "Autonomous plan-to-ship pipeline with adversarial review, TDD execution, and browser QA.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Vlad Tansky"
+      },
+      "source": "./plugins/vladstack"
+    }
+  ]
+}

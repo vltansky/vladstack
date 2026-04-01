@@ -1,0 +1,1 @@
+Invoke the autopilot skill. Takes a plan and autonomously: roasts it, fixes issues, creates a branch, executes with TDD and parallel workers, reviews, runs QA, and hands back a shippable branch. Zero interaction until handoff.

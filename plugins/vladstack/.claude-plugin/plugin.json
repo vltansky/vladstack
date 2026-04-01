@@ -1,0 +1,8 @@
+{
+  "name": "vladstack",
+  "version": "0.1.0",
+  "description": "Autonomous plan-to-ship pipeline with adversarial review, TDD execution, and browser QA.",
+  "author": {
+    "name": "Vlad Tansky"
+  }
+}
