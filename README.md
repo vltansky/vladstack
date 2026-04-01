@@ -1,9 +1,9 @@
 # vladstack
 
-Plan-to-ship skill kit for AI coding agents. One pipeline, zero babysitting.
+Idea-to-PR pipeline for AI coding agents. Brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 11 composable skills, zero babysitting.
 
 ```
-/brainstorm → /grill-me → /rfc-research → /autopilot → /ship-it → /fix-pr
+/brainstorm → /grill-me → /rfc-research → built-in plan mode → /autopilot → /ship-it → /fix-pr
 ```
 
 ## Why
@@ -69,7 +69,7 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 ## Workflow
 
 ```
-brainstorm → octocode-research → rfc-research → grill-me → autopilot → ship-it ⇄ fix-pr
+brainstorm → octocode-research → rfc-research → grill-me → built-in plan mode → autopilot → ship-it ⇄ fix-pr
                                                     ↕
                           debug-mode → tdd → roast-my-code → ship-it
                                                ↑

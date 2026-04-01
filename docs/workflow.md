@@ -3,10 +3,10 @@
 ## The Pipeline
 
 ```
-/brainstorm ──→ /octocode-research ──→ /rfc-research ──→ /grill-me ──→ /autopilot ──→ /ship-it ──→ /fix-pr
-      │                 │                    │               │               │              │              │
-  explore idea     deep-dive            research +       challenge        build it      create PR     address
-  & design it      code search          write plan       the idea       autonomously                  feedback
+/brainstorm ──→ /octocode-research ──→ /rfc-research ──→ /grill-me ──→ built-in plan mode ──→ /autopilot ──→ /ship-it ──→ /fix-pr
+      │                 │                    │               │              │               │              │              │
+  explore idea     deep-dive            research +       challenge     refine into      build it      create PR     address
+  & design it      code search          write plan       the idea      impl plan      autonomously                  feedback
 ```
 
 Each skill's handoff suggests the next step. The chain is natural.

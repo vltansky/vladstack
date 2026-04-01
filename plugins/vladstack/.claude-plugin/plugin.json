@@ -1,7 +1,7 @@
 {
   "name": "vladstack",
-  "version": "0.1.0",
-  "description": "Autonomous plan-to-ship pipeline with adversarial review, TDD execution, and browser QA.",
+  "version": "0.2.0",
+  "description": "Idea-to-PR pipeline for AI agents: brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 11 composable skills, zero babysitting.",
   "author": {
     "name": "Vlad Tansky"
   }
