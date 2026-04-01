@@ -1,0 +1,16 @@
+{
+  "name": "vladstack",
+  "displayName": "vladstack",
+  "version": "0.2.0",
+  "description": "Idea-to-PR pipeline for AI agents: brainstorm, stress-test, plan, build with TDD, cross-model review, QA, ship. 11 composable skills, zero babysitting.",
+  "author": {
+    "name": "Vlad Tansky"
+  },
+  "homepage": "https://github.com/vltansky/vladstack",
+  "repository": "https://github.com/vltansky/vladstack",
+  "license": "MIT",
+  "keywords": ["tdd", "code-review", "qa", "autopilot", "debugging", "rfc", "pipeline"],
+  "category": "developer-tools",
+  "tags": ["pipeline", "skills", "code-quality", "plan-to-ship"],
+  "skills": "./skills/"
+}
