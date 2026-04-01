@@ -1,5 +1,5 @@
 ---
-name: debug
+name: debug-mode
 description: "Systematic root-cause debugging with optional runtime log server for frontend/UI bugs. Hypothesis-driven investigation. Use when the user says 'debug', 'debug this', 'investigate', 'why is this broken', 'root cause', 'trace this bug', 'figure out why', 'this doesn't work', 'unexpected behavior', 'UI not updating', 'state is wrong', 'value is null/undefined', 'click doesn't work'. Also use instead of adding console.log — this skill collects logs automatically."
 ---
 

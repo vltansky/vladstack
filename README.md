@@ -27,7 +27,7 @@ The result: skills that work standalone (`/tdd`, `/debug`, `/roast-my-code`) but
 /reload-plugins
 ```
 
-### Codex plugin (optional, enables cross-model review in `/roast-my-code`)
+### Codex plugin (recommended, enables cross-model review in `/roast-my-code`)
 
 Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/codex`) and a ChatGPT subscription or OpenAI API key.
 

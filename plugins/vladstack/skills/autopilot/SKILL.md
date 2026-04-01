@@ -53,6 +53,22 @@ For READY or READY_WITH_RISKS verdicts: continue autonomously.
   If not found, search for them in package.json, Makefile, or equivalent.
   If still not found, note "unknown" — do not guess.
 
+### Step 1b: Validate guardrails
+
+Dry-run each guardrail command to confirm it works before starting execution:
+
+```bash
+# Test each detected command — we only care if it runs without "not found" errors
+[test command] 2>&1 | head -5
+[typecheck command] --noEmit 2>&1 | head -5
+[lint command] 2>&1 | head -5
+```
+
+If any command fails due to missing dependencies: install them now.
+Common fixes: `bun install`, `npm install`, `pip install -r requirements.txt`.
+Do not proceed to Step 2 until all guardrail commands execute without
+"command not found" or "module not found" errors.
+
 ### Step 2: Create branch
 
 If not already on a feature branch, create one:
@@ -163,7 +179,7 @@ for p in ~/.claude/skills/tdd/SKILL.md ~/.claude/skills/*/tdd/SKILL.md; do
 done
 
 DEBUG_PATH=""
-for p in ~/.claude/skills/debug/SKILL.md ~/.claude/skills/*/debug/SKILL.md; do
+for p in ~/.claude/skills/debug-mode/SKILL.md ~/.claude/skills/*/debug-mode/SKILL.md; do
   [ -f "$p" ] && DEBUG_PATH="$p" && break
 done
 
@@ -176,9 +192,14 @@ If not found: workers write tests after implementation as a fallback.
 
 If debug skill found: read its instrumentation approach for Phase 3 step 0b below.
 
-### Step 0b: Add debug instrumentation
+### Step 0b: Add debug instrumentation (when modifying existing code)
 
-Before writing any feature code, instrument the codebase for observability during execution:
+Skip this step if the plan only creates new files. Instrumentation is for
+observing existing behavior during modification — there's nothing to observe
+in code that doesn't exist yet.
+
+If the plan modifies existing functions or modules, instrument the codebase
+for observability during execution:
 
 1. Identify the modules/files the plan touches.
 2. Add lightweight logging at key boundaries — function entry/exit for new or modified
@@ -366,6 +387,9 @@ requires `agent-browser` setup and structured methodology.
 
 ## Phase 6: Cleanup
 
+If no debug instrumentation was added in Phase 3 (plan only created new files),
+skip to Phase 7.
+
 Remove debug instrumentation added in Phase 3 Step 0b.
 
 ```bash
@@ -387,53 +411,41 @@ After removal:
 
 ## Phase 7: Handoff
 
+The handoff summary is the user's only window into what autopilot decided.
+You MUST include every section below. Do not abbreviate or skip sections.
+
 Present the result to the user:
 
 ```
 ## Autopilot Complete
 
 ### Branch
-`{branch-name}` — [N] commits ([M] execution, [K] review fixes, [J] QA fixes)
+`{branch-name}` — [N] commits
 
 ### Pipeline
-| Phase | Duration | Result |
-|-------|----------|--------|
-| Roast | ~Xm | [N]/100 → [M]/100 after fixes |
-| Execute | ~Xm | [N/M] steps, [K] parallel / [J] sequential |
-| Review | ~Xm | [N] found, [M] fixed |
-| QA | ~Xm | [N]/100 health (or skipped) |
-
-### Roast Summary
-- Fixed: [X] high, [Y] medium severity issues
-- Known risks: [list]
-
-### Execution Summary
-- Layers: [N] ([M] steps ran in parallel, [K] sequential)
-- Guardrail failures during execution: [N] (all resolved / [X] unresolved)
-
-### Review Summary
-- Issues: [N] (code reuse: [X], quality: [Y], efficiency: [Z])
-- Fixed: [N], Skipped: [M] (false positives or not worth it)
-
-### QA Summary (if run)
-- Health score: [N]/100
-- Issues found: [N], Fixed: [M], Deferred: [K]
-- Screenshots: `.context/qa-reports/`
+| Phase | Result |
+|-------|--------|
+| Roast | [N]/100, [X] issues fixed |
+| Execute | [N] steps, guardrails pass/fail |
+| Review | [N] found, [M] fixed |
+| QA | skipped / [N]/100 health |
 
 ### Decision Log
 | # | Phase | Decision | Principle | Rationale |
 |---|-------|----------|-----------|-----------|
-| 1 | Roast | ... | ... | ... |
+| 1 | ... | ... | ... | ... |
+
+Every auto-resolved decision MUST appear here. If no decisions were logged
+during execution, that is a bug — go back and reconstruct the log from
+the work you did.
 
 ### Final Guardrails
 - Types: pass/fail
 - Tests: pass/fail ([N] passed, [M] failed)
-- Lint: pass/fail
 - Build: pass/fail
 
-### What I'd flag for human review
-[Anything that was borderline, surprising, or where the decision principles
-produced a defensible but debatable choice]
+### Flagged for human review
+[Anything borderline or debatable — or "None"]
 ```
 
 Suggest next step based on results:
@@ -451,8 +463,8 @@ Suggest next step based on results:
   audits what happened while they were away.
 - **TDD by default.** Every implementation step writes the failing test first. Skip
   only if no test infrastructure exists for that area — and note it in the log.
-- **Debug instrumentation is temporary.** Added at Phase 3 start, removed at Phase 6.
-  Never ship debug logs. The cleanup commit must be the last commit before handoff.
+- **Debug instrumentation is temporary.** When added (Phase 3, existing code only),
+  removed at Phase 6. Never ship debug logs.
 - **Do not skip guardrails.** If a project has no test/lint/build commands, note it
   and continue — but never skip a guardrail that exists.
 - **Atomic commits.** One commit per logical step. Never one giant commit at the end.

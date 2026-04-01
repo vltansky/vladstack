@@ -145,5 +145,5 @@ TDD returns: test file path, implementation file paths, guardrail results.
 
 ## Workflow
 
-**Prev:** `/debug` (found root cause, need a regression test) | `/autopilot` (uses TDD internally)
+**Prev:** `/debug-mode` (found root cause, need a regression test) | `/autopilot` (uses TDD internally)
 **Next:** `/roast-my-code` (review the implementation) | `/ship-it` (ship it)
