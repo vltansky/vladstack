@@ -75,7 +75,18 @@ Runs `/roast-my-code` first if it hasn't been run in the session.
 
 **Handoff:** When reviewers comment → `/fix-pr`.
 
-### 6. /fix-pr — Address feedback
+### 6. /fix — Fix a bug autonomously
+
+**Input:** Bug description, GitHub issue, error/stack trace, or failing test
+**Output:** Clean branch with fix, regression test, and passing guardrails
+
+Autonomous bug fix pipeline. Loads debug-mode, tdd, qa, octocode-research,
+and roast-my-code on demand. Four circuit breakers halt the run when the
+fix can't proceed safely.
+
+**Handoff:** `/ship-it` (create PR) | `/roast-my-code` (manual review)
+
+### 7. /fix-pr — Address feedback
 
 **Input:** PR with review comments
 **Output:** Fixes applied, replies posted, threads resolved
@@ -181,8 +192,9 @@ One stop point: NOT_READY (score < 60) with unresolved high-severity issues.
 
 | Skill | Used by | Standalone use |
 |-------|---------|----------------|
-| /tdd | autopilot workers | Bug fixes, test-first features |
-| /debug-mode | autopilot (guardrail failures + instrumentation) | Any root-cause investigation + frontend log server |
+| /fix | standalone | Autonomous end-to-end bug fix pipeline |
+| /tdd | autopilot workers, /fix | Bug fixes, test-first features |
+| /debug-mode | autopilot (guardrail failures + instrumentation), /fix | Any root-cause investigation + frontend log server |
 | /roast-my-code | autopilot (review phase), ship-it (gate) | Two-pass code review with cross-model Codex review |
 | /qa | autopilot (QA phase) | Test any running web app |
 | /octocode-research | grill-me, rfc-research | Deep GitHub code research |

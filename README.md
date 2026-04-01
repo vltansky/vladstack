@@ -1,6 +1,6 @@
 # vladstack
 
-Idea-to-PR pipeline for AI coding agents. Brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 11 composable skills, zero babysitting.
+Idea-to-PR pipeline for AI coding agents. Brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 12 composable skills, zero babysitting.
 
 ```
 /brainstorm → /grill-me → /rfc-research → built-in plan mode → /autopilot → /ship-it → /fix-pr
@@ -24,6 +24,12 @@ npx -y skills add vltansky/vladstack -g -y
 ```
 
 Installs all 11 skills globally for every detected agent (Claude Code, Codex, Cursor, and others).
+
+For local (project-only) install from a clone:
+
+```bash
+npm run install:local
+```
 
 ### Claude Code plugin
 
@@ -54,6 +60,7 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 | `/grill-me` | Adversarial stress-test — challenges premises, scores readiness |
 | `/autopilot` | Autonomous build: roast → fix → TDD execute → review → QA → handoff |
 | `/ship-it` | Create PR (runs `/roast-my-code` first if not already run) |
+| `/fix` | Autonomous bug fix: investigate → reproduce → fix → verify → review |
 | `/fix-pr` | Address reviewer feedback — fix, reply, resolve threads |
 
 ### Review
@@ -78,8 +85,8 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 brainstorm → octocode-research → rfc-research → grill-me → built-in plan mode → autopilot → ship-it ⇄ fix-pr
                                                     ↕
                           debug-mode → tdd → roast-my-code → ship-it
-                                               ↑
-                                               qa
+                                ↑              ↑
+                               fix             qa
 ```
 
 Every skill has a `## Workflow` section with **Prev/Next** links.
