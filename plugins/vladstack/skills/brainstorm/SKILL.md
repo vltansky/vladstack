@@ -7,186 +7,101 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
-
 <HARD-GATE>
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
 </HARD-GATE>
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+## First Response — Be Fast
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+Your first message MUST be a clarifying question. Do NOT explore files, create tasks, or research anything before asking the first question. Get the conversation moving immediately.
 
-## Checklist
+## Triage — Scale Process to Scope
 
-You MUST create a task for each of these items and complete them in order:
+After 1-2 questions, assess scope:
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Research prior art** (if scope gate passes) — background subagent searches how other projects solved the same problem
-4. **Propose 2-3 approaches** — with trade-offs, your recommendation, and prior art references when available
-5. **Present design** — in sections scaled to their complexity, get user approval after each section
-6. **Write design doc** — save to `docs/specs/YYYY-MM-DD-<topic>-design.md` and commit
-7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **User reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — proceed to plan mode or implementation
+| Scope | Signals | Process |
+|-------|---------|---------|
+| **Small** | Config change, UI tweak, single-file feature, clear requirements | Questions → Design (verbal) → Approval → Implement |
+| **Medium** | Multi-file feature, some unknowns, new component | Questions → Design → Approval → Write spec → Implement |
+| **Large** | New system, architecture decision, multiple subsystems, unfamiliar tech | Questions → Research → Design → Write spec → Self-review → Grill-me → Implement |
 
-## Process Flow
-
-```dot
-digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Scope warrants research?" [shape=diamond];
-    "Research prior art\n(background subagent)" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
-    "Transition to implementation" [shape=doublecircle];
-
-    "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Scope warrants research?";
-    "Scope warrants research?" -> "Research prior art\n(background subagent)" [label="yes"];
-    "Scope warrants research?" -> "Propose 2-3 approaches" [label="no"];
-    "Research prior art\n(background subagent)" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Transition to implementation" [label="approved"];
-}
-```
+Default to **small** unless evidence says otherwise. Create tasks only for medium/large scope.
 
 ## The Process
 
-**Understanding the idea:**
+### Ask Clarifying Questions
 
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec, plan, and implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
+- Ask questions one at a time — don't overwhelm
+- Prefer multiple choice when possible
+- Focus on: purpose, constraints, success criteria
+- Explore context (files, docs, commits) lazily — only when a question requires it, and do it in the background while asking
+- If the request describes multiple independent subsystems, flag it immediately and help decompose before diving in
 
-**Exploring approaches:**
+### Research Prior Art (large scope only)
+
+Only fires for large scope: architecture decisions, new systems, greenfield features, library/tool selection, unfamiliar patterns.
+
+Launch one background subagent while continuing questions. Prefer octocode MCP tools (`githubSearchCode`, `githubViewRepoStructure`) when available; fall back to GitHub search. If no external search tools exist, skip silently.
+
+Before proposing approaches, present a short **Prior Art** section:
+- 2-4 bullet points max, readable in 30 seconds
+- What was found, which projects, what pattern they used
+
+The user reacts before you propose approaches.
+
+### Propose Approaches
 
 - Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
-- Reference prior art findings when available — "Project X uses pattern Y" backing an approach is stronger than unsupported proposals
+- Lead with your recommendation and explain why
+- Reference prior art when available
 
-**Presenting the design:**
+### Present the Design
 
-- Once you believe you understand what you're building, present the design
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
+- Ask after each section whether it looks right
 - Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+- Be ready to go back and clarify
 
 **Design for isolation and clarity:**
-
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+- Break into smaller units with one clear purpose and well-defined interfaces
+- Each unit should be understandable and testable independently
+- Smaller, well-bounded units are easier to work with — better reasoning, more reliable edits
 
 **Working in existing codebases:**
-
 - Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+- Where existing code has problems that affect the work, include targeted improvements as part of the design
+- Don't propose unrelated refactoring
 
-## Prior Art Research
+### Write Spec (medium/large only)
 
-Optional research phase that brings real-world evidence into the brainstorming process. Findings are presented explicitly to the user before proposing approaches.
+- Write to `docs/specs/YYYY-MM-DD-<topic>-design.md` (user preferences override this)
+- Commit the design document
 
-### Scope Gate
+**Spec self-review (large only):**
+1. Placeholder scan — any TBD, TODO, incomplete sections? Fix them.
+2. Internal consistency — do sections contradict each other?
+3. Scope check — focused enough for a single implementation plan?
+4. Ambiguity check — any requirement interpretable two ways? Pick one.
 
-Research fires when the topic involves:
-- Architecture decisions or system design
-- New systems or greenfield features
-- Library or tool selection
-- Unfamiliar patterns or technologies
+Fix issues inline and move on.
 
-Research is skipped for:
-- UI tweaks and styling changes
-- Config changes
-- Bug fixes
-- Incremental additions to existing patterns
+**User review gate:**
+> "Spec written and committed to `<path>`. Review it and let me know if you want changes before implementation."
 
-When in doubt, skip. Research is a seasoning, not the main dish.
+### Stress-Test (large only)
 
-### Mechanism
+After user approves the spec:
+> "Before we build — I recommend `/grill-me` on this design to find what breaks before code is written. Skip with `no` to go straight to implementation."
 
-Launch one background subagent while asking clarifying questions. The subagent searches for how other projects solved the same problem — common patterns, battle-tested approaches, and cases where a different approach worked better.
+### Transition to Implementation
 
-Prefer octocode MCP tools (`githubSearchCode`, `githubViewRepoStructure`) when available; fall back to any GitHub search capability the host provides. If no external search tools exist, skip the research phase silently and proceed to approaches.
-
-### Presenting Findings
-
-Before proposing approaches, present a short **Prior Art** section to the user:
-
-- 2-4 bullet points max
-- What was found, which projects, what pattern they used
-- Keep it concise — the user should be able to read it in 30 seconds
-
-Example:
-> **Prior Art:**
-> - Stripe's API uses an event-driven pattern with webhook retries for this kind of async flow
-> - Three popular open-source projects (X, Y, Z) use a polling approach instead — simpler but less real-time
-> - No projects found using the approach you described, which could mean it's novel or that others avoided it for a reason
-
-The user reacts to the findings before you propose approaches. Their reaction may shift which approaches are worth proposing.
-
-## After the Design
-
-**Documentation:**
-
-- Write the validated design (spec) to `docs/specs/YYYY-MM-DD-<topic>-design.md`
-  - (User preferences for spec location override this default)
-- Commit the design document to git
-
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
-
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
-
-Fix any issues inline. No need to re-review — just fix and move on.
-
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start implementation."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
-
-**Stress-test the design:**
-
-After the user approves the spec, recommend stress-testing it before implementation:
-
-> "Before we build — I recommend running `/grill-me` on this design. It will push back on assumptions, challenge feasibility, and find what breaks before code is written. Skip with `no` if you want to go straight to implementation."
-
-Invoke the grill-me skill with the spec as input unless the user explicitly skips.
-
-**Implementation:**
-
-- Transition to plan mode or begin implementation based on the approved spec.
+Proceed to plan mode or begin implementation based on the approved design.
 
 ## Key Principles
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **Fast first response** — ask, don't explore
+- **Scale to scope** — small features get light process
+- **One question at a time** — don't overwhelm
+- **YAGNI ruthlessly** — remove unnecessary features
+- **Explore alternatives** — propose 2-3 approaches before settling
+- **Incremental validation** — present design, get approval before moving on
