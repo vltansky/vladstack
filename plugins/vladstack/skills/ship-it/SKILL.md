@@ -5,6 +5,16 @@ description: "Create a GitHub PR with conventional format and AI session context
 
 # Create PR
 
+## Step 0: Ensure review ran
+
+Before shipping, check if `roast-my-code` was already run in this session.
+
+If **not run yet**: run it now. Wait for both passes to complete (Pass 1 auto-fixes,
+Pass 2 presents sins — auto-select option b for critical + serious). Apply fixes
+before proceeding.
+
+If **already run**: continue to Step 1.
+
 ## Step 1: Check state
 
 ```bash
@@ -107,3 +117,8 @@ gh pr create --title "<title>" --body "<body>"
 ```
 
 Display the returned PR URL on its own line so it's clickable.
+
+## Workflow
+
+**Prev:** `/roast-my-code` (review passed) | `/autopilot` (handoff suggests ship-it)
+**Next:** `/fix-pr` (address reviewer feedback) | done

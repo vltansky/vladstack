@@ -142,3 +142,8 @@ TDD returns: test file path, implementation file paths, guardrail results.
   weak. Strengthen it until it fails, then implement.
 - **Match existing test patterns.** TDD is about discipline, not about introducing
   your preferred test framework or assertion library.
+
+## Workflow
+
+**Prev:** `/debug` (found root cause, need a regression test) | `/autopilot` (uses TDD internally)
+**Next:** `/roast-my-code` (review the implementation) | `/ship-it` (ship it)

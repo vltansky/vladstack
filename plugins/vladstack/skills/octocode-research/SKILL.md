@@ -675,3 +675,8 @@ See Phase 5 (Output Gate) for reference formats.
 ## Additional Resources
 
 - **`references/GUARDRAILS.md`** - Security, trust levels, limits, and integrity rules
+
+## Workflow
+
+**Prev:** (entry point — user asks a question about code)
+**Next:** `/rfc-research` (formalize findings into a proposal) | `/grill-me` (stress-test a design found during research) | `/autopilot` (implement based on findings)

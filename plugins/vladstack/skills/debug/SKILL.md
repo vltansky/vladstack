@@ -210,3 +210,8 @@ After the investigation, summarize:
 - **Minimize the blast radius.** Fix the bug. Don't refactor the neighborhood.
 - **Time-box investigation.** 3 rounds of hypothesize-investigate. If still stuck,
   escalate to the user with everything you've learned.
+
+## Workflow
+
+**Prev:** `/debug-mode` (runtime evidence collected) | test failure | user report
+**Next:** `/tdd` (write regression test for the fix) | `/roast-my-code` (review the fix)

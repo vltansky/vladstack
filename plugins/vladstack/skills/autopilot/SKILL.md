@@ -294,9 +294,18 @@ done
 echo "ROAST_PATH=${ROAST_PATH:-not_found}"
 ```
 
-If found: read it and follow its methodology (4 parallel agents: code reuse,
-code quality, efficiency, roast). If not found: run a lightweight self-review
-yourself covering the same dimensions on the branch diff.
+If found: read it and follow its full two-pass methodology:
+- **Pass 1 (Simplify)**: 3 agents (reuse, quality, efficiency) — auto-fix. No override needed,
+  this pass is non-interactive by design.
+- **Pass 2 (Roast + Codex)**: 2 agents (roast, codex review) — findings only.
+
+If not found: run a lightweight self-review yourself covering the same dimensions
+on the branch diff.
+
+### Auto-decision override for Pass 2
+
+The skill normally waits for the user to pick which sins to fix. In autopilot mode,
+auto-select option **b) Critical + serious** and apply immediately. Do not wait.
 
 ### Applying fixes
 
@@ -453,3 +462,8 @@ Suggest next step based on results:
 - **Do not expand scope.** Implement exactly what the plan says. If you notice
   something that should be done but isn't in the plan, log it in the handoff —
   do not implement it.
+
+## Workflow
+
+**Prev:** `/grill-me` (stress-tested plan) | `/rfc-research` (approved RFC)
+**Next:** `/ship-it` (create PR) | `/roast-my-code` (manual review if not satisfied)

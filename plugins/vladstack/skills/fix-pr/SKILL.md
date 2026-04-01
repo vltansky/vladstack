@@ -216,3 +216,8 @@ Mark TODO complete, move to next comment.
 | No comments | "No PR comments to address." |
 | All addressed | "All done! Addressed X comments." |
 | Some skipped | "Addressed X comments, skipped Y. Let me know if you want to revisit." |
+
+## Workflow
+
+**Prev:** `/ship-it` (PR created, reviewers left comments)
+**Next:** `/ship-it` (re-push after fixes) | `/roast-my-code` (self-review before re-push) | done

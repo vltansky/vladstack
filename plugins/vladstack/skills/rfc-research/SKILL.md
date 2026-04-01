@@ -279,3 +279,8 @@ Before completing the RFC, verify:
 ## References
 
 - For the full RFC template, see [references/rfc-template.md](references/rfc-template.md)
+
+## Workflow
+
+**Prev:** `/octocode-research` (deep-dive research that feeds the RFC)
+**Next:** `/grill-me` (stress-test the RFC) | `/autopilot` (implement the approved RFC)

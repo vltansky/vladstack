@@ -403,3 +403,8 @@ If repo has `TODOS.md`:
 │   └── ...
 └── baseline.json
 ```
+
+## Workflow
+
+**Prev:** `/autopilot` (uses QA internally for web apps) | manual implementation
+**Next:** `/roast-my-code` (code review after QA fixes) | `/ship-it` (ship if healthy)

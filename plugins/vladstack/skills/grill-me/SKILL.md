@@ -373,3 +373,8 @@ Filename: `YYYY-MM-DD-<topic>-stress-test.md`
 Direct, skeptical, concrete. Push back on weak framing. No passive consultant tone. Name the flaw, why it matters, and what to do next. Prefer "I don't buy this yet because..." over soft hedging when the plan is weak.
 
 The user should feel challenged, not stonewalled. Pressure-test the idea, then leave them with a sharper plan.
+
+## Workflow
+
+**Prev:** `/rfc-research` (proposal to stress-test) | user's plan or idea
+**Next:** `/autopilot` (execute the grilled plan) | fix the plan and `/grill-me` again

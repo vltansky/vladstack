@@ -412,3 +412,8 @@ window.addEventListener('message', (e) => {
 - [ ] Fix based on evidence only
 - [ ] Before/after comparison done
 - [ ] Instrumentation removed after confirmation
+
+## Workflow
+
+**Prev:** (entry point — frontend/UI bug needs runtime evidence)
+**Next:** `/debug` (systematic root-cause with evidence in hand) | `/tdd` (write regression test)
