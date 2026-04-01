@@ -3,17 +3,28 @@
 ## The Pipeline
 
 ```
-/grill-me ──→ /rfc (or plan mode) ──→ /autopilot ──→ /ship-it ──→ /fix-pr
-    │               │                      │              │               │
- challenge       research +            build it        create PR      address
- the idea        write plan          autonomously                    feedback
+/brainstorm ──→ /grill-me ──→ /rfc (or plan mode) ──→ /autopilot ──→ /ship-it ──→ /fix-pr
+      │              │               │                      │              │               │
+  explore idea    challenge       research +            build it        create PR      address
+  & design it     the idea        write plan          autonomously                    feedback
 ```
 
 Each skill's handoff suggests the next step. The chain is natural.
 
 ## Full Flow
 
-### 1. /grill-me — Challenge the idea
+### 1. /brainstorm — Explore and design
+
+**Input:** A rough idea or feature request
+**Output:** Validated design spec committed to `docs/specs/`
+
+Collaborative design session: explores project context, asks clarifying questions
+one at a time, researches prior art (via octocode), proposes 2-3 approaches with
+trade-offs, then writes a design doc for approval.
+
+**Handoff:** "Before we build — I recommend running `/grill-me` on this design."
+
+### 2. /grill-me — Challenge the idea
 
 **Input:** A plan, idea, or proposal
 **Output:** Stress-test report with score and verdict
@@ -26,7 +37,7 @@ patterns that contradict the plan, and simpler alternatives.
 
 **Handoff:** "Next: write an RFC with /rfc-research or refine the plan."
 
-### 2. /rfc-research — Write the plan
+### 3. /rfc-research — Write the plan
 
 **Input:** Topic or problem statement
 **Output:** Evidence-backed RFC document
@@ -38,7 +49,7 @@ Alternative: use Claude's native plan mode for simpler plans.
 
 **Handoff:** "Next: /autopilot to implement."
 
-### 3. /autopilot — Build it
+### 4. /autopilot — Build it
 
 **Input:** A reviewed plan
 **Output:** A shippable branch with commits, tests, and passing guardrails
@@ -47,14 +58,14 @@ See [Autopilot Flow](#autopilot-flow) below.
 
 **Handoff:** "All green → /ship-it. Failures → fix first."
 
-### 4. /ship-it — Create PR
+### 5. /ship-it — Create PR
 
 **Input:** A branch with commits
 **Output:** GitHub PR with conventional format + AI session context
 
 **Handoff:** "When reviewers comment → /fix-pr."
 
-### 5. /fix-pr — Address feedback
+### 6. /fix-pr — Address feedback
 
 **Input:** PR with review comments
 **Output:** Fixes applied, replies posted, threads resolved
