@@ -118,6 +118,29 @@ gh pr create --title "<title>" --body "<body>"
 
 Display the returned PR URL on its own line so it's clickable.
 
+## Step 5: Watch CI
+
+Block until CI checks complete. This keeps the agent in context so it can
+fix failures immediately without the user having to start a new session and
+re-explain the change.
+
+```bash
+gh pr checks --watch --fail-fast
+```
+
+**If checks pass:** "CI green. Ready for review."
+
+**If checks fail:**
+1. Read the failure: `gh pr checks --json name,state,description --jq '.[] | select(.state == "FAILURE")'`
+2. Get logs: `gh run view <run-id> --log-failed | tail -50`
+3. Fix the issue, commit, push.
+4. Watch again: `gh pr checks --watch --fail-fast`
+5. Max 2 fix attempts. If still failing after 2: report what's broken, stop.
+
+**Tip:** while this agent watches CI, the user can open a new terminal and
+start a separate `claude` session to keep working on something else in
+parallel.
+
 ## Workflow
 
 **Prev:** `/roast-my-code` (review passed) | `/autopilot` (handoff suggests ship-it)
