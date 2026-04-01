@@ -19,7 +19,13 @@ The result: skills that work standalone (`/tdd`, `/debug-mode`, `/roast-my-code`
 
 ## Install
 
-### vladstack plugin
+```bash
+npx -y skills add vltansky/vladstack -g -y
+```
+
+Installs all 11 skills globally for every detected agent (Claude Code, Codex, Cursor, and others).
+
+### Claude Code plugin
 
 ```bash
 /plugin marketplace add vltansky/vladstack
@@ -27,7 +33,7 @@ The result: skills that work standalone (`/tdd`, `/debug-mode`, `/roast-my-code`
 /reload-plugins
 ```
 
-### Codex plugin (recommended, enables cross-model review in `/roast-my-code`)
+### Codex cross-model review (optional, enables `/roast-my-code` dual-LLM pass)
 
 Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/codex`) and a ChatGPT subscription or OpenAI API key.
 
