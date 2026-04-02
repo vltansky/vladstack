@@ -1,6 +1,0 @@
-interface:
-  display_name: "QA"
-  short_description: "Browser-based testing and bug fixing"
-
-policy:
-  allow_implicit_invocation: true

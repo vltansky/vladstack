@@ -1,6 +1,0 @@
-interface:
-  display_name: "Autopilot"
-  short_description: "Plan-to-code autonomous pipeline"
-
-policy:
-  allow_implicit_invocation: true

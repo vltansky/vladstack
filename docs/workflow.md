@@ -3,46 +3,41 @@
 ## The Pipeline
 
 ```
-/vs-brainstorm ──→ /vs-octocode-research ──→ /vs-rfc-research ──→ /vs-grill-me ──→ built-in plan mode ──→ /vs-autopilot ──→ /vs-ship-it ──→ /vs-fix-pr
-      │                    │                       │                   │                  │                  │                 │                │
-  explore idea        deep-dive               research +           challenge          refine into        build it          create PR       address
-  & design it         code search             write plan           the idea           impl plan        autonomously                        feedback
+/vs-brainstorm ──→ /vs-grill-me ──→ built-in plan mode ──→ /vs-autopilot ──→ /vs-ship-it ──→ /vs-fix-pr
+      │                  │                  │                  │                 │                │
+  explore idea       challenge          refine into        build it          create PR       address
+  RFC + plan         the idea           impl plan        autonomously                        feedback
+      ↕
+/vs-octocode-research
+  (deep-dive code search)
 ```
 
 Each skill's handoff suggests the next step. The chain is natural.
 
 ## Full Flow
 
-### 0. /vs-brainstorm — Explore and design
+### 0. /vs-brainstorm — Explore, design, and document
 
 **Input:** A rough idea or feature request
-**Output:** Validated design spec
+**Output:** RFC (human artifact: what/why) + Plan (agent artifact: how)
 
 Collaborative design session: explores project context, asks clarifying questions
-one at a time, researches prior art, proposes approaches with trade-offs, then
-writes a design for approval.
+one at a time, researches prior art, proposes approaches with trade-offs. For
+medium/large scope, writes an RFC for human review — once approved, generates
+an implementation plan for the agent to follow.
 
-**Handoff:** `/vs-grill-me` (stress-test the design) | `/vs-octocode-research` (dig deeper)
+**Handoff:** `/vs-grill-me` (stress-test the RFC) | `/vs-octocode-research` (dig deeper)
 
 ### 1. /vs-octocode-research — Explore code
 
 **Input:** A question about code ("how does X work", "where is Y defined")
 **Output:** Data-driven findings with exact file references
 
-Deep code exploration using octocode MCP — local codebase analysis with LSP
-and external GitHub/npm research.
+Discovers relevant repos via octocode MCP, clones them locally for fast
+interactive research. User drives the exploration with instant local
+Grep/Read/Glob responses.
 
-**Handoff:** `/vs-rfc-research` (formalize findings) | `/vs-grill-me` (stress-test a design) | `/vs-autopilot` (implement)
-
-### 2. /vs-rfc-research — Write the plan
-
-**Input:** Topic or problem statement
-**Output:** Evidence-backed RFC document
-
-Researches the topic using octocode MCP, produces an RFC with prior art
-analysis, alternatives, and risks.
-
-**Handoff:** `/vs-grill-me` (stress-test the RFC) | `/vs-autopilot` (implement the approved RFC)
+**Handoff:** `/vs-brainstorm` (design based on findings) | `/vs-grill-me` (stress-test a design) | `/vs-autopilot` (implement)
 
 ### 3. /vs-grill-me — Challenge the idea
 
@@ -197,7 +192,7 @@ One stop point: NOT_READY (score < 60) with unresolved high-severity issues.
 | /vs-debug-mode | vs-autopilot (guardrail failures + instrumentation), /vs-fix | Any root-cause investigation + frontend log server |
 | /vs-roast-my-code | vs-autopilot (review phase), vs-ship-it (gate) | Two-pass code review with cross-model Codex review |
 | /vs-qa | vs-autopilot (QA phase) | Test any running web app |
-| /vs-octocode-research | vs-grill-me, vs-rfc-research | Deep GitHub code research |
+| /vs-octocode-research | vs-brainstorm, vs-grill-me | Local-first code research |
 
 ## Skill Composition
 

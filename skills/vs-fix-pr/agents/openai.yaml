@@ -1,6 +1,0 @@
-interface:
-  display_name: "Fix PR"
-  short_description: "Address PR review feedback"
-
-policy:
-  allow_implicit_invocation: true

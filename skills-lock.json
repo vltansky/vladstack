@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "skills": {
+    "vs-autopilot": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-brainstorm": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-debug-mode": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-fix": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-fix-pr": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-grill-me": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-octocode-research": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-qa": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-rfc-research": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-roast-my-code": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-ship-it": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vs-tdd": {
+      "source": "/Users/vladta/Projects/vladstack",
+      "sourceType": "local",
+      "computedHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

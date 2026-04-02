@@ -1,9 +1,9 @@
 # vladstack
 
-Idea-to-PR pipeline for AI coding agents. Brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 12 composable skills, zero babysitting.
+Idea-to-PR pipeline for AI coding agents. Brainstorm, stress-test, plan, build with TDD, cross-model review (Claude + Codex), QA, ship. 11 composable skills, zero babysitting.
 
 ```
-/vs-brainstorm → /vs-grill-me → /vs-rfc-research → built-in plan mode → /vs-autopilot → /vs-ship-it → /vs-fix-pr
+/vs-brainstorm (RFC + plan) → /vs-grill-me → built-in plan mode → /vs-autopilot → /vs-ship-it → /vs-fix-pr
 ```
 
 ## Why
@@ -23,7 +23,7 @@ The result: skills that work standalone (`/vs-tdd`, `/vs-debug-mode`, `/vs-roast
 npx -y skills add vltansky/vladstack -g -y
 ```
 
-Installs all 12 skills globally for every detected agent (Claude Code, Codex, Cursor, and others).
+Installs all 11 skills globally for every detected agent (Claude Code, Codex, Cursor, and others).
 
 For local (project-only) install from a clone:
 
@@ -56,7 +56,7 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 
 | Command | What it does |
 |---------|-------------|
-| `/vs-brainstorm` | Collaborative design session — explore intent, refine idea into spec |
+| `/vs-brainstorm` | Collaborative design session — explore intent, refine idea into spec. Writes RFC (human artifact) + plan (agent artifact) for medium/large scope |
 | `/vs-grill-me` | Adversarial stress-test — challenges premises, scores readiness |
 | `/vs-autopilot` | Autonomous build: roast → fix → TDD execute → review → QA → handoff |
 | `/vs-ship-it` | Create PR (runs `/vs-roast-my-code` first if not already run) |
@@ -76,17 +76,16 @@ Requires [Codex CLI](https://github.com/openai/codex) (`npm install -g @openai/c
 | `/vs-tdd` | Red/green/refactor — write failing test first |
 | `/vs-debug-mode` | Hypothesis-driven debugging + runtime log server for frontend |
 | `/vs-qa` | Browser-based QA testing with atomic fix commits |
-| `/vs-octocode-research` | Deep GitHub code search and exploration |
-| `/vs-rfc-research` | Evidence-backed RFC / technical proposal |
+| `/vs-octocode-research` | Discover repos, clone locally, explore interactively |
 
 ## Workflow
 
 ```
-vs-brainstorm → vs-octocode-research → vs-rfc-research → vs-grill-me → built-in plan mode → vs-autopilot → vs-ship-it ⇄ vs-fix-pr
-                                                             ↕
-                               vs-debug-mode → vs-tdd → vs-roast-my-code → vs-ship-it
-                                     ↑              ↑
-                                   vs-fix          vs-qa
+vs-brainstorm (RFC + plan) → vs-grill-me → built-in plan mode → vs-autopilot → vs-ship-it ⇄ vs-fix-pr
+        ↕                        ↕
+vs-octocode-research      vs-debug-mode → vs-tdd → vs-roast-my-code → vs-ship-it
+                                 ↑              ↑
+                               vs-fix          vs-qa
 ```
 
 Every skill has a `## Workflow` section with **Prev/Next** links.
@@ -112,7 +111,7 @@ See [docs/workflow.md](docs/workflow.md) for the full pipeline and autopilot int
 ## External dependencies
 
 - [dev-browser](https://github.com/anthropics/dev-browser) — headless browser (used by /vs-qa)
-- [octocode MCP](https://github.com/bgauryy/octocode-mcp) — GitHub code search (used by /vs-rfc-research, /vs-grill-me)
+- [octocode MCP](https://github.com/bgauryy/octocode-mcp) — GitHub code search (used by /vs-brainstorm, /vs-octocode-research, /vs-grill-me)
 - [Codex CLI](https://github.com/openai/codex) — cross-model review (used by /vs-roast-my-code)
 - `gh` CLI — GitHub operations (used by /vs-ship-it, /vs-fix-pr)
 

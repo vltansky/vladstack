@@ -1,6 +1,0 @@
-interface:
-  display_name: "Brainstorm"
-  short_description: "Collaborative design exploration"
-
-policy:
-  allow_implicit_invocation: true

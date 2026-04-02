@@ -1,6 +1,0 @@
-interface:
-  display_name: "Fix"
-  short_description: "Autonomous bug fix pipeline"
-
-policy:
-  allow_implicit_invocation: true

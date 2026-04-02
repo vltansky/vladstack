@@ -1,6 +1,0 @@
-interface:
-  display_name: "Debug Mode"
-  short_description: "Hypothesis-driven root-cause debugging"
-
-policy:
-  allow_implicit_invocation: true
